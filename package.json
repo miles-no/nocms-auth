@@ -34,5 +34,9 @@
   },
   "dependencies": {
     "jsonwebtoken": "^8.1.0"
+  },
+  "release": {
+    "verifyConditions": "condition-circle",
+    "debug": false
   }
 }
