@@ -1,11 +1,13 @@
 {
   "name": "nocms-auth",
   "version": "0.0.0-development",
-  "description": "",
-  "main": "index.js",
+  "description": "nocms auth",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "eslint": "eslint --ext .js .",
+    "prepublish": "babel ./src --out-dir ./lib --source-maps --presets env"
   },
   "repository": {
     "type": "git",
@@ -18,8 +20,17 @@
   },
   "homepage": "https://github.com/miles-no/nocms-auth#readme",
   "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.1",
+    "babel-preset-env": "^1.6.0",
     "condition-circle": "^1.5.0",
-    "semantic-release": "^8.0.3"
+    "eslint": "^4.8.0",
+    "eslint-config-webteam": "^2.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "semantic-release": "^8.0.3",
+    "webpack": "^3.7.1"
   },
   "dependencies": {
     "jsonwebtoken": "^8.1.0"
