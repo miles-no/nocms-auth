@@ -1,0 +1,23 @@
+{
+  "name": "nocms-auth",
+  "version": "0.0.0-development",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/miles-no/nocms-auth.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miles-no/nocms-auth/issues"
+  },
+  "homepage": "https://github.com/miles-no/nocms-auth#readme",
+  "devDependencies": {
+    "semantic-release": "^8.0.3"
+  }
+}
