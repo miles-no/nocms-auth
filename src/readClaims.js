@@ -8,30 +8,27 @@ module.exports = (tokenSecret, logger = console) => {
 
     token = token.replace('Bearer ', '');
 
-    if (!req.locals) {
-      Object.assign(req, { locals: {} });
+    if (!res.locals) {
+      Object.assign(res, { locals: {} });
     }
-    res.locals.claims = [];
 
     jwt.verify(token, tokenSecret, {}, (err, decoded) => {
       if (err) {
-        Object.assign(req.locals, {
-          claims: [],
+        Object.assign(res.locals, {
+          claims: {},
           authorizationHeader: `Bearer ${token}`,
           tokenValid: false,
         });
-        logger.info('token invalid');
-        logger.info(JSON.stringify(req.locals.claims));
+        logger.warn('Token invalid', { req, res }, 'express');
         next();
         return;
       }
-      Object.assign(req.locals, {
-        claims: (decoded && decoded.claims) || [],
+      Object.assign(res.locals, {
+        claims: (decoded && decoded.claims) || {},
         authorizationHeader: `Bearer ${token}`,
         tokenValid: true,
       });
-      logger.info('token valid');
-      logger.info(JSON.stringify(req.locals.claims));
+      logger.info('Token valid', { req, res }, 'express');
       next();
     });
   };

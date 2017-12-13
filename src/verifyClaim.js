@@ -1,12 +1,12 @@
 module.exports = (claim, logger = console) => {
   return (req, res, next) => {
-    const { claims, tokenValid } = req.locals;
+    const { claims, tokenValid } = res.locals;
 
     if (tokenValid && claims && claims[claim]) {
       next();
       return;
     } else if (!tokenValid) {
-      logger.error('invalid token');
+      logger.error('Invalid token');
     } else {
       logger.error(`Unauthorized. ${req.originalUrl} needs ${claim}. Client claims: ${JSON.stringify(claims)}`);
     }
