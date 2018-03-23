@@ -18,6 +18,7 @@ module.exports = (tokenSecret, logger = console) => {
           claims: {},
           authorizationHeader: `Bearer ${token}`,
           tokenValid: false,
+          tokenExpired: err.name === 'TokenExpiredError',
         });
         logger.warn('Token invalid', { req, res }, 'express');
         next();

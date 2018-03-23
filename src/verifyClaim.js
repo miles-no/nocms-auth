@@ -1,6 +1,6 @@
 module.exports = (claim, logger = console) => {
   return (req, res, next) => {
-    const { claims, tokenValid } = res.locals;
+    const { claims, tokenValid, tokenExpired } = res.locals;
 
     if (tokenValid && claims && claims[claim]) {
       next();
@@ -10,7 +10,7 @@ module.exports = (claim, logger = console) => {
       logger.error('Invalid token');
       res
         .status(401)
-        .append('WWW-Authenticate', 'Reauth')
+        .append('WWW-Authenticate', tokenExpired ? 'Reauth' : 'Login')
         .send('401 Unauthorized');
       return;
     }

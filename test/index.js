@@ -83,6 +83,29 @@ test('verify claim should return status 401 on invalid tokens', (t) => {
   const status = (code) => { t.equals(code, 401); return res; };
   const append = (header, value) => {
     t.equals(header, 'WWW-Authenticate');
+    t.equals(value, 'Login');
+    return res;
+  };
+
+  const send = (text) => {
+    t.equals(text, '401 Unauthorized');
+    return res;
+  };
+
+  res = { locals: { tokenValid: false, }, status, append, send };
+
+  verifyClaim('foo')(req, res, () => {
+    t.fail();
+  });
+});
+
+test('verify claim should return status 401 with reauth header for expired tokens', (t) => {
+  t.plan(4);
+  const req = {};
+  let res;
+  const status = (code) => { t.equals(code, 401); return res; };
+  const append = (header, value) => {
+    t.equals(header, 'WWW-Authenticate');
     t.equals(value, 'Reauth');
     return res;
   };
@@ -92,7 +115,7 @@ test('verify claim should return status 401 on invalid tokens', (t) => {
     return res;
   };
 
-  res = { locals: { tokenValid: false }, status, append, send };
+  res = { locals: { tokenValid: false, tokenExpired: true }, status, append, send };
 
   verifyClaim('foo')(req, res, () => {
     t.fail();
@@ -114,5 +137,17 @@ test('verify claim should return status 403 on missing claims', (t) => {
 
   verifyClaim('foo')(req, res, () => {
     t.fail();
+  });
+});
+
+test('read claims should set expired property on expired tokens', (t) => {
+  t.plan(1);
+  const token = jwt.sign({ foo: 1 }, tokenSecret, { expiresIn: 0 });
+  const headers = { authorization: `Bearer ${token}` };
+  
+  const req = { headers };
+  const res = {};
+  readClaims(tokenSecret)(req, res, () => {
+    t.equals(res.locals.tokenExpired, true);
   });
 });
