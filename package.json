@@ -4,10 +4,12 @@
   "description": "nocms auth",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run prepare && npm run build-test && node bin/",
+    "prepare": "babel ./src --out-dir ./lib --source-maps --presets env",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "eslint": "eslint --ext .js .",
-    "prepublish": "babel ./src --out-dir ./lib --source-maps --presets env"
+    "prepublish": "babel ./src --out-dir ./lib --source-maps --presets env",
+    "build-test": "babel ./test --out-dir ./bin --presets env"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,7 @@
     "eslint-config-webteam": "^2.0.0",
     "eslint-plugin-import": "^2.7.0",
     "semantic-release": "^8.0.3",
+    "tape": "^4.9.0",
     "webpack": "^3.7.1"
   },
   "dependencies": {

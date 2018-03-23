@@ -5,11 +5,16 @@ module.exports = (claim, logger = console) => {
     if (tokenValid && claims && claims[claim]) {
       next();
       return;
-    } else if (!tokenValid) {
-      logger.error('Invalid token');
-    } else {
-      logger.error(`Unauthorized. ${req.originalUrl} needs ${claim}. Client claims: ${JSON.stringify(claims)}`);
     }
-    res.status(403).send('403 Forbidden').end();
+    if (!tokenValid) {
+      logger.error('Invalid token');
+      res
+        .status(401)
+        .append('WWW-Authenticate', 'Reauth')
+        .send('401 Unauthorized');
+      return;
+    }
+    logger.error(`Unauthorized. ${req.originalUrl} needs ${claim}. Client claims: ${JSON.stringify(claims)}`);
+    res.status(403).send('403 Forbidden');
   };
 };
