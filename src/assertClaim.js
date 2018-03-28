@@ -4,14 +4,16 @@ module.exports = (tokenSecret, token, claim) => {
   return new Promise((resolve, reject) => {
     const tokenStr = token.replace('Bearer ', '');
 
-    try {
-      const tokenData = jwt.verify(tokenStr, tokenSecret);
+    jwt.verify(tokenStr, tokenSecret, (err, tokenData) => {
+      if (err) {
+        reject({ status: 401 });
+        return;
+      }
       if (tokenData.claims && tokenData.claims[claim]) {
         resolve();
+        return;
       }
       reject({ status: 403 });
-    } catch (e) {
-      reject({ status: 401 });
-    }
+    });
   });
 };
