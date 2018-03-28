@@ -1,5 +1,5 @@
 import test from 'tape';
-import { readClaims, verifyClaim } from '../lib';
+import { readClaims, verifyClaim, assertClaim } from '../lib';
 import jwt from 'jsonwebtoken';
 
 const tokenSecret = 'shhhhhh';
@@ -150,4 +150,23 @@ test('read claims should set expired property on expired tokens', (t) => {
   readClaims(tokenSecret)(req, res, () => {
     t.equals(res.locals.tokenExpired, true);
   });
+});
+
+test('assert claim should check if a claim is available on token', (t) => {
+  t.plan(1);
+  const token = jwt.sign({ claims: { foo: 1 } }, tokenSecret);
+  t.ok(assertClaim(tokenSecret, token, 'foo'));
+});
+
+test('assert claim throw error object with http status code 401 for invalid tokens', (t) => {
+  t.plan(1);
+  const result = assertClaim(tokenSecret, 'invalid token', 'foo');
+  t.equals(result.status, 401);
+});
+
+test('assert claim throw error object with http status code 403 for missing claims', (t) => {
+  t.plan(1);
+  const token = jwt.sign({ claims: { foo: 1 } }, tokenSecret);  
+  const result = assertClaim(tokenSecret, token, 'bar');
+  t.equals(result.status, 403);
 });
