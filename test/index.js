@@ -155,18 +155,34 @@ test('read claims should set expired property on expired tokens', (t) => {
 test('assert claim should check if a claim is available on token', (t) => {
   t.plan(1);
   const token = jwt.sign({ claims: { foo: 1 } }, tokenSecret);
-  t.ok(assertClaim(tokenSecret, token, 'foo'));
+  assertClaim(tokenSecret, token, 'foo')
+    .then(() => {
+      t.pass()
+    })
+    .catch((err) => {
+      t.fail();
+    });
 });
 
 test('assert claim throw error object with http status code 401 for invalid tokens', (t) => {
   t.plan(1);
-  const result = assertClaim(tokenSecret, 'invalid token', 'foo');
-  t.equals(result.status, 401);
+  assertClaim(tokenSecret, 'invalid token', 'foo')
+    .then(() => {
+      t.fail();
+    })
+    .catch((err) => {
+      t.equals(err.status, 401);
+    });
 });
 
 test('assert claim throw error object with http status code 403 for missing claims', (t) => {
   t.plan(1);
   const token = jwt.sign({ claims: { foo: 1 } }, tokenSecret);  
-  const result = assertClaim(tokenSecret, token, 'bar');
-  t.equals(result.status, 403);
+  assertClaim(tokenSecret, token, 'bar')
+    .then(() => {
+      t.fail();
+    })
+    .catch((err) => {
+      t.equals(err.status, 403);
+    });
 });
