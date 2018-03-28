@@ -37,4 +37,17 @@ This repository is published using `semantic-release`, with the default [Angular
 Read claims from the ``nocms-authenticated`` cookie (requires cookie-parser middleware) or Authorization header. Verifies claims and sets tokenValid, claims and authorizationHeader on req.locals.
 
 ### verifyClaim, (claim, logger)
-Method to use for ensuring tokenValid and given claim is true.
+Method to use for ensuring tokenValid and given claim is true. If claim can't be verified, the middleware responds with a 403. Invalid tokens will result in a 401 response.
+
+### assertClaim, (tokenSecret, token, claim)
+Method to use for reading a token and asserting a claim. The method returns a promise which will resolve with no params or reject with an error object with a `status`. Status 401 means invalid token, whereas 403 means missing claim.
+
+```js
+assertClaim(tokenSecret, token, 'admin')
+  .then(() => {
+    // I am admin
+  })
+  .catch((err) => {
+    // I am not admin
+  });
+```
