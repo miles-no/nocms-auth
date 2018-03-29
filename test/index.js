@@ -1,5 +1,5 @@
 import test from 'tape';
-import { readClaims, verifyClaim, assertClaim } from '../lib';
+import { readClaims, verifyClaim, assertClaim, readToken } from '../lib';
 import jwt from 'jsonwebtoken';
 
 const tokenSecret = 'shhhhhh';
@@ -177,7 +177,7 @@ test('assert claim throw error object with http status code 401 for invalid toke
 
 test('assert claim throw error object with http status code 403 for missing claims', (t) => {
   t.plan(1);
-  const token = jwt.sign({ claims: { foo: 1 } }, tokenSecret);  
+  const token = jwt.sign({ claims: { foo: 1 } }, tokenSecret);
   assertClaim(tokenSecret, token, 'bar')
     .then(() => {
       t.fail();
@@ -185,4 +185,11 @@ test('assert claim throw error object with http status code 403 for missing clai
     .catch((err) => {
       t.equals(err.status, 403);
     });
+});
+
+test('readToken should return payload of token', (t) => {
+  t.plan(1);
+  const token = jwt.sign({ foo: 1 }, tokenSecret);
+  const data = readToken(token);
+  t.equals(data.foo, 1);
 });
