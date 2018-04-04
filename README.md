@@ -34,7 +34,7 @@ This repository is published using `semantic-release`, with the default [Angular
 ## API
 
 ### readClaims, (tokenSecret, logger)
-Read claims from the ``nocms-authenticated`` cookie (requires cookie-parser middleware) or Authorization header. Verifies claims and sets tokenValid, claims and authorizationHeader on req.locals.
+Read claims from the ``nocms-authenticated`` cookie (requires cookie-parser middleware) or Authorization header. Verifies claims and sets tokenValid, claims and authorizationHeader on res.locals.
 
 ### verifyClaim, (claim, logger)
 Method to use for ensuring tokenValid and given claim is true. If claim can't be verified, the middleware responds with a 403. Invalid tokens will result in a 401 response.
