@@ -6,10 +6,9 @@
   "scripts": {
     "test": "npm run prepare && npm run build-test && node bin/",
     "prepare": "babel ./src --out-dir ./lib --source-maps --presets env",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "eslint": "eslint --ext .js .",
-    "prepublish": "babel ./src --out-dir ./lib --source-maps --presets env",
-    "build-test": "babel ./test --out-dir ./bin --presets env"
+    "build-test": "babel ./test --out-dir ./bin --presets env",
+    "nsp": "nsp check"
   },
   "repository": {
     "type": "git",
@@ -24,22 +23,18 @@
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.0.1",
-    "babel-preset-env": "^1.6.0",
-    "condition-circle": "^1.5.0",
-    "eslint": "^4.8.0",
-    "eslint-config-webteam": "^2.0.0",
-    "eslint-plugin-import": "^2.7.0",
-    "semantic-release": "^8.0.3",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^4.19.1",
+    "eslint-config-webteam": "^2.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "nsp": "^3.2.1",
+    "semantic-release": "^15.5.1",
     "tape": "^4.9.0",
     "webpack": "^3.7.1"
   },
   "dependencies": {
-    "jsonwebtoken": "^8.1.0"
-  },
-  "release": {
-    "verifyConditions": "condition-circle",
-    "debug": false
+    "jsonwebtoken": "^8.2.2"
   }
 }
